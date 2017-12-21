@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EventsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmergencyEvents">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="OccuranceDate" Type="datetime2" Precision="7" />
+          <Property Name="EventType" Type="int" />
+          <Property Name="InfoSourceId" Type="int" />
+        </EntityType>
+        <EntityType Name="InfoSources">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="TrustLevel" Type="int" />
+        </EntityType>
+        <Association Name="FK_EmergencyEvents_InfoSources">
+          <End Role="InfoSources" Type="Self.InfoSources" Multiplicity="0..1" />
+          <End Role="EmergencyEvents" Type="Self.EmergencyEvents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoSources">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmergencyEvents">
+              <PropertyRef Name="InfoSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventsDbModelStoreContainer">
+          <EntitySet Name="EmergencyEvents" EntityType="Self.EmergencyEvents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InfoSources" EntityType="Self.InfoSources" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EmergencyEvents_InfoSources" Association="Self.FK_EmergencyEvents_InfoSources">
+            <End Role="InfoSources" EntitySet="InfoSources" />
+            <End Role="EmergencyEvents" EntitySet="EmergencyEvents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EventsDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EmergencyEvent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="OccuranceDate" Type="DateTime" Precision="7" />
+          <Property Name="EventType" Type="Int32" />
+          <Property Name="InfoSourceId" Type="Int32" />
+          <NavigationProperty Name="InfoSource" Relationship="Self.FK_EmergencyEvents_InfoSources" FromRole="EmergencyEvents" ToRole="InfoSources" />
+        </EntityType>
+        <EntityType Name="InfoSource">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TrustLevel" Type="Int32" />
+          <NavigationProperty Name="EmergencyEvents" Relationship="Self.FK_EmergencyEvents_InfoSources" FromRole="InfoSources" ToRole="EmergencyEvents" />
+        </EntityType>
+        <Association Name="FK_EmergencyEvents_InfoSources">
+          <End Role="InfoSources" Type="Self.InfoSource" Multiplicity="0..1" />
+          <End Role="EmergencyEvents" Type="Self.EmergencyEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoSources">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmergencyEvents">
+              <PropertyRef Name="InfoSourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventsDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EmergencyEvents" EntityType="Self.EmergencyEvent" />
+          <EntitySet Name="InfoSources" EntityType="Self.InfoSource" />
+          <AssociationSet Name="FK_EmergencyEvents_InfoSources" Association="Self.FK_EmergencyEvents_InfoSources">
+            <End Role="InfoSources" EntitySet="InfoSources" />
+            <End Role="EmergencyEvents" EntitySet="EmergencyEvents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EventsDbModelStoreContainer" CdmEntityContainer="EventsDb">
+          <EntitySetMapping Name="EmergencyEvents">
+            <EntityTypeMapping TypeName="EventsDbModel.EmergencyEvent">
+              <MappingFragment StoreEntitySet="EmergencyEvents">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="OccuranceDate" ColumnName="OccuranceDate" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="InfoSourceId" ColumnName="InfoSourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InfoSources">
+            <EntityTypeMapping TypeName="EventsDbModel.InfoSource">
+              <MappingFragment StoreEntitySet="InfoSources">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TrustLevel" ColumnName="TrustLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
