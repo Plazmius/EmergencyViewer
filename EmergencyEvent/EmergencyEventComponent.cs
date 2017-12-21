@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
 using EmergencyViewer.Data.Entities;
 
 namespace EmergencyEventComponent
 {
-    [Serializable]
     public partial class EmergencyEventComponent : UserControl
     {
         public EmergencyEventStorage EmergencyEventRepository { get; set; }
@@ -17,14 +17,7 @@ namespace EmergencyEventComponent
             InitializeComponent();
             EmergencyEventRepository = new EmergencyEventStorage();
         }
-
-        //public EmergencyEventComponent(IEnumerable<EmergencyEventViewModel> events)
-        //{
-        //    InitializeComponent();
-        //    EmergencyEventRepository = new EmergencyEventRepository(new List<EmergencyEventViewModel>(events)/*, onNewEvent*/);
-        //    EmergencyEventRepository.EventItemAddedEvent += onNewEvent;
-        //}
-
+        
         public void AddToTable(EmergencyEventViewModel emergencyEvent)
         {
             //MessageBox.Show($"Attention! New emergency: {eventItem.Name}");
@@ -68,6 +61,17 @@ namespace EmergencyEventComponent
             var rm = new ResourceManager("EmergencyEventComponent.Localization.MessageResources", typeof(EmergencyEventComponent).Assembly);
             // Assign the string for the "strMessage" key to a message box.
             MessageBox.Show(rm.GetString(key));
+        }
+
+        public DateTime DateFrom
+        {
+            get => dateFromPicker.Value;
+            set => dateFromPicker.Value = value;
+        }
+        public DateTime DateTo
+        {
+            get => dateToPicker.Value;
+            set => dateToPicker.Value = value;
         }
     }
 }

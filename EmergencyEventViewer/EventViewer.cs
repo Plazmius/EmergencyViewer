@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using EmergencyEventComponent;
 using System;
 using System.Collections;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using CustomAttributes;
@@ -12,6 +13,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using EmergencyEventComponent.Exceptions;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Xml.Serialization;
 using AutoMapper;
 using EmergencyViewer.Data.Entities;
 
@@ -35,12 +37,20 @@ namespace EmergencyEventViewer
 
             emergencyEventComponent1.Controls.Find("showEvents", false).First().Click += (e, a) =>
             {
-                var file = new FileStream("emergencyViewerState.dat", FileMode.Create);
-
+                var file = new FileStream(AppState.StateFileName, FileMode.Create);
+                var state = new AppState
+                {
+                    DateFrom = emergencyEventComponent1.DateFrom,
+                    DateTo = emergencyEventComponent1.DateTo,
+                    Height = Height,
+                    Width = Width
+                };
                 try
                 {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(file, emergencyEventComponent1);
+                    var serializer = new XmlSerializer(typeof(AppState));
+                    serializer.Serialize(file, state);
+                    //var formatter = new BinaryFormatter();
+                    //formatter.Serialize(file, state);
                 }
                 catch (Exception exc)
                 {
@@ -66,17 +76,19 @@ namespace EmergencyEventViewer
 
         private void RestoreState()
         {
-            if (!File.Exists("emergencyViewerState.dat")) return;
-            var file = new FileStream("emergencyViewerState.dat", FileMode.Open);
+            if (!File.Exists(AppState.StateFileName))
+            {
+                return;
+            }
+            var file = new FileStream(AppState.StateFileName, FileMode.Open);
             try
             {
-
-                var formatter = new BinaryFormatter();
-
-                // Deserialize the hashtable from the file and 
-                // assign the reference to the local variable.
-                emergencyEventComponent1 =
-                    (EmergencyEventComponent.EmergencyEventComponent)formatter.Deserialize(file);
+                var serializer = new XmlSerializer(typeof(AppState));
+                var state = (AppState)serializer.Deserialize(file);
+                Height = state.Height;
+                Width = state.Width;
+                emergencyEventComponent1.DateFrom = state.DateFrom;
+                emergencyEventComponent1.DateTo = state.DateTo;
             }
             catch (SerializationException e)
             {
@@ -96,6 +108,23 @@ namespace EmergencyEventViewer
         private void emergencyEventAppender1_Load(object sender, EventArgs e)
         {
 
+        }
+    }
+
+    public class AppState : ISerializable
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public static string StateFileName = "emergencyViewerState.xml";
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(Width), Width);
+            info.AddValue(nameof(Height), Height);
+            info.AddValue(nameof(DateFrom), DateFrom);
+            info.AddValue(nameof(DateTo), DateTo);
         }
     }
 }
