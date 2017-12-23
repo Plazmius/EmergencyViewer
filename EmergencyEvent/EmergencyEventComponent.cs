@@ -18,7 +18,8 @@ namespace EmergencyEventComponent
     {
         public IEmergencyEventStorage Storage { get; set; }
 
-        public EmergencyEventComponent(IEmergencyEventStorage storage)
+        [ImportingConstructor]
+        public EmergencyEventComponent([Import("EventStorage")]IEmergencyEventStorage storage)
         {
             InitializeComponent();
             Storage = storage;

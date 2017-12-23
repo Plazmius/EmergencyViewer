@@ -3,7 +3,9 @@ using System.Windows.Forms;
 using EmergencyEventComponent;
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,6 +18,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Xml.Serialization;
 using AutoMapper;
+using CommonServiceLocator;
 using EmergencyViewer.Data.Entities;
 
 namespace EmergencyEventViewer
@@ -28,43 +31,43 @@ namespace EmergencyEventViewer
         public EventViewer()
         {
             InitializeComponent();
-            RestoreState();
+
+            Import();
+
+            tabControl1.TabPages.Clear();
+            var emergencyEventComponent = _userControls
+                .FirstOrDefault(control => control is EmergencyEventComponent.EmergencyEventComponent) as EmergencyEventComponent.EmergencyEventComponent;
+            var emergencyEventAppender = _userControls
+                .FirstOrDefault(control => control is EmergencyEventAppender.EmergencyEventAppender) as EmergencyEventAppender.EmergencyEventAppender;
+            if (emergencyEventAppender != null)
+            {
+                emergencyEventAppender.EmergencyEventAddedEvent += (sender, args) =>
+                {
+                    emergencyEventComponent1.AddToTable(new EmergencyEventViewModel(args.EmergencyEvent.Name,
+                        args.EmergencyEvent.Description,
+                        args.EmergencyEvent.OccuranceDate,
+                        args.EmergencyEvent.EventType));
+                };
+            }
+
+            if (emergencyEventComponent != null)
+            {
+                emergencyEventComponent.Controls.Find("showEvents", false).First().Click += (e, a) => { SaveState(emergencyEventComponent); };
+                RestoreState(emergencyEventComponent);
+            }
+
+            foreach (var uc in _userControls)
+            {
+                var tp = new TabPage
+                {
+                    Text = ((DisplayNameAttribute)uc.GetType().GetCustomAttributes(typeof(DisplayNameAttribute), false).FirstOrDefault())?.DisplayName
+                };
+                tp.Controls.Add(uc);
+                tabControl1.TabPages.Add(tp);
+            }
+
 
             Mapper.Initialize(cfg => cfg.CreateMap<EmergencyEvent, EmergencyEventViewModel>());
-            emergencyEventAppender1.EmergencyEventAddedEvent += (sender, args) =>
-            {
-                emergencyEventComponent1.AddToTable(new EmergencyEventViewModel(args.EmergencyEvent.Name,
-                    args.EmergencyEvent.Description,
-                    args.EmergencyEvent.OccuranceDate,
-                    args.EmergencyEvent.EventType));
-            };
-
-            emergencyEventComponent1.Controls.Find("showEvents", false).First().Click += (e, a) =>
-            {
-                var file = new FileStream(AppState.StateFileName, FileMode.Create);
-                var state = new AppState
-                {
-                    DateFrom = emergencyEventComponent1.DateFrom,
-                    DateTo = emergencyEventComponent1.DateTo,
-                    Height = Height,
-                    Width = Width
-                };
-                try
-                {
-                    var serializer = new XmlSerializer(typeof(AppState));
-                    serializer.Serialize(file, state);
-                    //var formatter = new BinaryFormatter();
-                    //formatter.Serialize(file, state);
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.Message);
-                }
-                finally
-                {
-                    file.Close();
-                }
-            };
         }
 
         private void componentInfoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -78,7 +81,7 @@ namespace EmergencyEventViewer
             }
         }
 
-        private void RestoreState()
+        private void RestoreState(EmergencyEventComponent.EmergencyEventComponent component)
         {
             if (!File.Exists(AppState.StateFileName))
             {
@@ -91,12 +94,39 @@ namespace EmergencyEventViewer
                 var state = (AppState)serializer.Deserialize(file);
                 Height = state.Height;
                 Width = state.Width;
-                emergencyEventComponent1.DateFrom = state.DateFrom;
-                emergencyEventComponent1.DateTo = state.DateTo;
+                component.DateFrom = state.DateFrom;
+                component.DateTo = state.DateTo;
             }
             catch (SerializationException e)
             {
                 Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+            }
+            finally
+            {
+                file.Close();
+            }
+        }
+
+        private void SaveState(EmergencyEventComponent.EmergencyEventComponent component)
+        {
+            var file = new FileStream(AppState.StateFileName, FileMode.Create);
+            var state = new AppState
+            {
+                DateFrom = component.DateFrom,
+                DateTo = component.DateTo,
+                Height = Height,
+                Width = Width
+            };
+            try
+            {
+                var serializer = new XmlSerializer(typeof(AppState));
+                serializer.Serialize(file, state);
+                //var formatter = new BinaryFormatter();
+                //formatter.Serialize(file, state);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
             finally
             {
@@ -113,6 +143,21 @@ namespace EmergencyEventViewer
         {
 
         }
+
+        public void Import()
+        {
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(
+                new DirectoryCatalog(
+                    Path.GetDirectoryName(
+                        Assembly.GetExecutingAssembly().Location)));
+
+            CompositionContainer container = new CompositionContainer(catalog);
+            container.ComposeExportedValue("EventStorage", ServiceLocator.Current.GetInstance<IEmergencyEventStorage>());
+
+            container.ComposeParts(this);
+        }
+
     }
 
     public class AppState : ISerializable

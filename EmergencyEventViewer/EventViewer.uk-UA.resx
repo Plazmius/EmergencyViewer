@@ -124,10 +124,4 @@
   <data name="componentInfoToolStripMenuItem.Text" xml:space="preserve">
     <value>Інформація про компонент</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Показ</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>Додати</value>
-  </data>
 </root>
