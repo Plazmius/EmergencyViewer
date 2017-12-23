@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using EmergencyEventComponent;
 using System;
 using System.Collections;
+using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace EmergencyEventViewer
 {
     public partial class EventViewer : Form
     {
+        [ImportMany(typeof(UserControl))]
+        private IEnumerable<UserControl> _userControls;
+
         public EventViewer()
         {
             InitializeComponent();

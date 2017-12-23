@@ -11,7 +11,7 @@ namespace EmergencyViewer.Data.Concrete.EF
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class EmergencyEvent
     {
         public int Id { get; set; }
@@ -20,7 +20,7 @@ namespace EmergencyViewer.Data.Concrete.EF
         public Nullable<System.DateTime> OccuranceDate { get; set; }
         public Nullable<int> EventType { get; set; }
         public Nullable<int> InfoSourceId { get; set; }
-
+    
         public virtual InfoSource InfoSource { get; set; }
     }
 }

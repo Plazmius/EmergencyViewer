@@ -6,7 +6,6 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using EmergencyViewer.Data.Entities;
 
 namespace EmergencyViewer.Data.Concrete.EF
 {
@@ -17,7 +16,7 @@ namespace EmergencyViewer.Data.Concrete.EF
     public partial class EventsDb : DbContext
     {
         public EventsDb()
-            : base("name=EventsDb")
+            : base("name=EventsDbForAsync")
         {
         }
     

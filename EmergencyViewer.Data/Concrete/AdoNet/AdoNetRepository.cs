@@ -14,7 +14,7 @@ namespace EmergencyViewer.Data.Concrete
         public AdoNetRepository()
         {
             //TODO: move this to config
-            _connection = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EventsDb;Integrated Security=True;Pooling=False");
+            _connection = new SqlConnection("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EventsDbForAsync;Integrated Security=True");
             _connection.Open();
             _transaction = _connection.BeginTransaction();
         }

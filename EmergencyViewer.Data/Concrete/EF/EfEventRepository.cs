@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using EmergencyViewer.Data.Abstract;
 using EmergencyViewer.Data.Entities;
@@ -9,6 +10,11 @@ namespace EmergencyViewer.Data.Concrete.EF
     public class EfEventRepository : IRepository<EmergencyEvent>
     {
         private readonly EventsDb _db = new EventsDb();
+
+        public EfEventRepository()
+        {
+            _db.Database.Log = s => Debug.WriteLine(s);
+        }
 
         public IEnumerable<EmergencyEvent> GetAll()
         {

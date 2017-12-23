@@ -58,7 +58,7 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="OccuranceDate" Type="DateTime" Precision="7" />
-          <Property Name="EventType" Type="Int32" />
+          <Property Name="EventType" Type="Int32" Nullable="true" />
           <Property Name="InfoSourceId" Type="Int32" />
           <NavigationProperty Name="InfoSource" Relationship="Self.FK_EmergencyEvents_InfoSources" FromRole="EmergencyEvents" ToRole="InfoSources" />
         </EntityType>

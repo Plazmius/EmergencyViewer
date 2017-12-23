@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Resources;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using EmergencyViewer.Data.Abstract;
 using EmergencyViewer.Data.Entities;
 
 namespace EmergencyEventComponent
 {
+    [Export(typeof(UserControl))]
+    [DisplayName("Emergency events viewving component.")]
     public partial class EmergencyEventComponent : UserControl
     {
-        public EmergencyEventStorage EmergencyEventRepository { get; set; }
+        public IEmergencyEventStorage Storage { get; set; }
 
-        public EmergencyEventComponent()
+        public EmergencyEventComponent(IEmergencyEventStorage storage)
         {
             InitializeComponent();
-            EmergencyEventRepository = new EmergencyEventStorage();
+            Storage = storage;
         }
-        
+
         public void AddToTable(EmergencyEventViewModel emergencyEvent)
         {
             //MessageBox.Show($"Attention! New emergency: {eventItem.Name}");
@@ -31,7 +37,7 @@ namespace EmergencyEventComponent
             }
         }
 
-        private void showEvents_Click(object sender, EventArgs e)
+        private async void showEvents_Click(object sender, EventArgs e)
         {
             if (dateFromPicker.Value > dateToPicker.Value)
             {
@@ -40,20 +46,59 @@ namespace EmergencyEventComponent
             }
 
             eventsGrid.Rows.Clear();
-            var eventsToShow = EmergencyEventRepository
-                .Filter(ev => ev.OccuranceDate < dateToPicker.Value && ev.OccuranceDate > dateFromPicker.Value)
-                .Select(ev => new EmergencyEventViewModel(ev.Name, 
-                    ev.Description, 
-                    ev.OccuranceDate.GetValueOrDefault(), 
-                    (EmergencyEventType)ev.EventType.GetValueOrDefault()));
 
-            foreach (var emergencyEvent in eventsToShow)
+            var eventsToShow = await GetEventsInRangeAsync();
+
+            foreach (var emergencyEvent in eventsToShow.Take(10000))
             {
-                eventsGrid.Rows.Add(emergencyEvent.Name, 
-                    emergencyEvent.EventTypeName, 
-                    emergencyEvent.Description, 
+                eventsGrid.Rows.Add(emergencyEvent.Name,
+                    emergencyEvent.EventTypeName,
+                    emergencyEvent.Description,
                     emergencyEvent.OccuranceDate.ToShortDateString());
             }
+        }
+
+        public async Task<IEnumerable<EmergencyEventViewModel>> GetEventsInRangeAsync()
+        {
+            ChangeControlAvailability(false);
+            var results = await Task.Run(() =>
+            {
+                return Storage
+                    .Filter(ev => ev.OccuranceDate < dateToPicker.Value && ev.OccuranceDate > dateFromPicker.Value)
+                    .Select(ev => new EmergencyEventViewModel(ev.Name,
+                        ev.Description,
+                        ev.OccuranceDate.GetValueOrDefault(),
+                        (EmergencyEventType)ev.EventType.GetValueOrDefault()));
+            });
+            ChangeControlAvailability(true);
+            return results;
+        }
+
+        public IEnumerable<EmergencyEventViewModel> GetEventsInRange()
+        {
+            Func<IEnumerable<EmergencyEventViewModel>> getEventsToShow = () =>
+            {
+                var evsToShow = Storage
+                    .Filter(ev => ev.OccuranceDate < dateToPicker.Value && ev.OccuranceDate > dateFromPicker.Value)
+                    .Select(ev => new EmergencyEventViewModel(ev.Name,
+                        ev.Description,
+                        ev.OccuranceDate.GetValueOrDefault(),
+                        (EmergencyEventType)ev.EventType.GetValueOrDefault()));
+
+                return evsToShow;
+            };
+
+            ChangeControlAvailability(false);
+
+            Action<IAsyncResult> enableControlsCallBack = res =>
+            {
+                Action enableControls = () => ChangeControlAvailability(true);
+                Invoke(enableControls);
+            };
+
+            var result = getEventsToShow.BeginInvoke(new AsyncCallback(enableControlsCallBack), this);
+            var eventsToShow = getEventsToShow.EndInvoke(result);
+            return eventsToShow;
         }
 
         public void ShowLocalizedMessageBox(string key)
@@ -61,6 +106,14 @@ namespace EmergencyEventComponent
             var rm = new ResourceManager("EmergencyEventComponent.Localization.MessageResources", typeof(EmergencyEventComponent).Assembly);
             // Assign the string for the "strMessage" key to a message box.
             MessageBox.Show(rm.GetString(key));
+        }
+
+        private void ChangeControlAvailability(bool availability)
+        {
+            dateToPicker.Enabled = availability;
+            dateFromPicker.Enabled = availability;
+            eventsGrid.Enabled = availability;
+            showEvents.Enabled = availability;
         }
 
         public DateTime DateFrom

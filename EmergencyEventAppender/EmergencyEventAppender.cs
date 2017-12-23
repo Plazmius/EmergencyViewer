@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -13,6 +14,8 @@ using EmergencyViewer.Data.Entities;
 
 namespace EmergencyEventAppender
 {
+    [Export(typeof(UserControl))]
+    [DisplayName("Emergency events adding component.")]
     public partial class EmergencyEventAppender : UserControl
     {
         private IRepository<EmergencyEvent> _eventRepository;

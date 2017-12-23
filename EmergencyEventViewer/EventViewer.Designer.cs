@@ -1,4 +1,8 @@
-﻿namespace EmergencyEventViewer
+﻿using CommonServiceLocator;
+using EmergencyEventComponent;
+using Unity.ServiceLocation;
+
+namespace EmergencyEventViewer
 {
     partial class EventViewer
     {
@@ -29,12 +33,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EventViewer));
-            EmergencyEventComponent.EmergencyEventStorage emergencyEventStorage2 = new EmergencyEventComponent.EmergencyEventStorage();
+            EmergencyEventComponent.IEmergencyEventStorage emergencyEventStorage2 = ServiceLocator.Current.GetInstance<IEmergencyEventStorage>();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.componentInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.emergencyEventComponent1 = new EmergencyEventComponent.EmergencyEventComponent();
+            this.emergencyEventComponent1 = new EmergencyEventComponent.EmergencyEventComponent(emergencyEventStorage2);
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.emergencyEventAppender1 = new EmergencyEventAppender.EmergencyEventAppender();
             this.menuStrip.SuspendLayout();
@@ -75,7 +79,7 @@
             // emergencyEventComponent1
             // 
             resources.ApplyResources(this.emergencyEventComponent1, "emergencyEventComponent1");
-            this.emergencyEventComponent1.EmergencyEventRepository = emergencyEventStorage2;
+            this.emergencyEventComponent1.Storage = emergencyEventStorage2;
             this.emergencyEventComponent1.Name = "emergencyEventComponent1";
             this.emergencyEventComponent1.Load += new System.EventHandler(this.emergencyEventComponent1_Load);
             // 

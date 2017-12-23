@@ -124,21 +124,24 @@
   <data name="endDateLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="startDateLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 34</value>
+  </data>
   <data name="Type.HeaderText" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="&gt;&gt;endDateLabel.Name" xml:space="preserve">
     <value>endDateLabel</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="dateToPicker.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 22</value>
   </data>
-  <data name="eventsGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 137</value>
+  <data name="&gt;&gt;eventsGrid.Name" xml:space="preserve">
+    <value>eventsGrid</value>
   </data>
-  <data name="&gt;&gt;startDateLabel.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;Type.Name" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="showEvents.Text" xml:space="preserve">
     <value>Show events</value>
@@ -170,10 +173,10 @@
   <data name="endDateLabel.Text" xml:space="preserve">
     <value>End date</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="eventsGrid.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>8, 16</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="endDateLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -186,11 +189,14 @@
   <data name="dateFromPicker.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 22</value>
   </data>
-  <data name="&gt;&gt;dateToPicker.Parent" xml:space="preserve">
+  <data name="&gt;&gt;endDateLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;startDateLabel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="startDateLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;showEvents.Name" xml:space="preserve">
+    <value>showEvents</value>
   </data>
   <data name="&gt;&gt;endDateLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -207,9 +213,6 @@
   <data name="eventsGrid.Size" type="System.Drawing.Size, System.Drawing">
     <value>617, 334</value>
   </data>
-  <data name="showEvents.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="&gt;&gt;dateFromPicker.Type" xml:space="preserve">
     <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -219,11 +222,11 @@
   <data name="&gt;&gt;showEvents.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="endDateLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="&gt;&gt;dateFromPicker.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="&gt;&gt;Date.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;dateToPicker.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -243,44 +246,41 @@
   <data name="&gt;&gt;eventsGrid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;showEvents.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="endDateLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 17</value>
   </data>
   <data name="dateFromPicker.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="&gt;&gt;Type.Name" xml:space="preserve">
-    <value>Type</value>
-  </data>
   <data name="&gt;&gt;startDateLabel.Name" xml:space="preserve">
     <value>startDateLabel</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
   </data>
   <data name="showEvents.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="startDateLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 34</value>
+  <data name="eventsGrid.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;Title.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="eventsGrid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>25, 137</value>
+  </data>
+  <data name="startDateLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;Type.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;showEvents.Name" xml:space="preserve">
-    <value>showEvents</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;dateToPicker.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="Description.HeaderText" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>EmergencyEventComponent</value>
   </data>
   <data name="&gt;&gt;dateToPicker.Name" xml:space="preserve">
     <value>dateToPicker</value>
@@ -291,17 +291,20 @@
   <data name="&gt;&gt;eventsGrid.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Date.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="showEvents.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
-  <data name="&gt;&gt;eventsGrid.Name" xml:space="preserve">
-    <value>eventsGrid</value>
+  <data name="&gt;&gt;showEvents.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="startDateLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
-  <data name="&gt;&gt;Date.Name" xml:space="preserve">
-    <value>Date</value>
+  <data name="Title.HeaderText" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="&gt;&gt;dateToPicker.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;dateFromPicker.Parent" xml:space="preserve">
     <value>$this</value>
@@ -312,20 +315,17 @@
   <data name="&gt;&gt;startDateLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="eventsGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="endDateLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;endDateLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>EmergencyEventComponent</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="Title.HeaderText" xml:space="preserve">
-    <value>Title</value>
+  <data name="eventsGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="startDateLabel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -339,8 +339,8 @@
   <data name="Date.HeaderText" xml:space="preserve">
     <value>Date</value>
   </data>
-  <data name="&gt;&gt;dateToPicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;Date.Name" xml:space="preserve">
+    <value>Date</value>
   </data>
   <data name="dateToPicker.Location" type="System.Drawing.Point, System.Drawing">
     <value>476, 54</value>

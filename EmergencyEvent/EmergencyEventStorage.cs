@@ -8,28 +8,33 @@ using EmergencyViewer.Data.Concrete.EF;
 
 namespace EmergencyEventComponent
 {
-    public class EmergencyEventStorage
+    public interface IEmergencyEventStorage
+    {
+        event Action<EmergencyEvent> EventItemAddedEvent;
+        void AddEvent(EmergencyEvent eventItem);
+        IEnumerable<EmergencyEvent> Filter(Func<EmergencyEvent, bool> predicate);
+    }
+
+    public class EmergencyEventStorage : IEmergencyEventStorage
     {
         public event Action<EmergencyEvent> EventItemAddedEvent;
-     
+        private readonly IRepository<EmergencyEvent> _eventRepository;
+
+        public EmergencyEventStorage(IRepository<EmergencyEvent> repository)
+        {
+            _eventRepository = repository;
+        }
+
         public void AddEvent(EmergencyEvent eventItem)
         {
-            using (var repository = new EfEventRepository())
-            {
-                repository.Create(eventItem);
-                EventItemAddedEvent?.Invoke(eventItem);
-                repository.Save();
-            }
+            _eventRepository.Create(eventItem);
+            EventItemAddedEvent?.Invoke(eventItem);
+            _eventRepository.Save();
         }
 
         public IEnumerable<EmergencyEvent> Filter(Func<EmergencyEvent, bool> predicate)
         {
-            //TODO: Implement Get(predicate) method
-            //return _eventRepository.GetAll().Where(predicate);
-            using (var repository = new EfEventRepository())
-            {
-                return repository.Get(predicate);
-            }
+            return _eventRepository.GetAll().Where(predicate).ToList();   
         }
     }
 }
